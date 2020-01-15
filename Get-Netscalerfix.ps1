@@ -1,5 +1,5 @@
 ﻿Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted -ErrorAction SilentlyContinue 
-Import-Module .\Posh-SSH\2.2\Posh-SSH.psm1
+install-module posh-ssh
 
 
           $computerarray = @()
