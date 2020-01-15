@@ -28,7 +28,10 @@ $newssh.WriteLine("cat /etc/crontab")
 $newssh.WriteLine("top -n 10")
 $newssh.WriteLine("cat /var/log/bash.log | grep nobody")
 $tempfile = "$($nsip)_$($env:USERDNSDOMAIN).log" 
-1..7000 | foreach -process { $newssh.Readline($_) | out-file -Append $tempfile }Remove-SSHSession -Index $ssh.SessionId} else { throw "no reacheable nsip address" }
+1..650 | foreach -process { $newssh.Readline($_) | out-file -Append $tempfile }
+Remove-SSHSession -Index $ssh.SessionId
+} else { throw "no reacheable nsip address" }
+
 
 }
 
