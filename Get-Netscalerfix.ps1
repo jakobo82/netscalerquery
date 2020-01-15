@@ -15,8 +15,8 @@ install-module posh-ssh
 foreach ($nsip in $computerarray) {
 
 Get-SSHSession | Remove-SSHSession
-
-if (Test-Connection $nsip) {
+$nsipconnectivity = Test-netConnection $nsip -Port 22
+if ($nsipconnectivity.TcpTestSucceeded -eq $true ) {
 $nscred = (Get-Credential -UserName nsroot -Message "netscaler pass")
 $ssh = New-SSHSession -ComputerName $nsip -Credential $nscred  -Port 22 -AcceptKey
 $newssh = New-SSHShellStream -SessionId $ssh.SessionId
