@@ -11,13 +11,13 @@ install-module posh-ssh
                 }
             }
             until ($input -eq '')
-
+$nscred = (Get-Credential -UserName nsroot -Message "netscaler pass")
 foreach ($nsip in $computerarray) {
 
 Get-SSHSession | Remove-SSHSession
 $nsipconnectivity = Test-netConnection $nsip -Port 22
 if ($nsipconnectivity.TcpTestSucceeded -eq $true ) {
-$nscred = (Get-Credential -UserName nsroot -Message "netscaler pass")
+
 $ssh = New-SSHSession -ComputerName $nsip -Credential $nscred  -Port 22 -AcceptKey
 $newssh = New-SSHShellStream -SessionId $ssh.SessionId
 
@@ -30,7 +30,7 @@ $newssh.WriteLine("cat /etc/crontab")
 $newssh.WriteLine("top -n 10")
 $newssh.WriteLine("cat /var/log/bash.log | grep nobody")
 $tempfile = "$($nsip)_$($env:USERDNSDOMAIN).log" 
-1..650 | foreach -process { $newssh.Readline($_) | out-file -Append $tempfile }
+1..1200 | foreach -process { $newssh.Readline($_) | out-file -Append $tempfile }
 Remove-SSHSession -Index $ssh.SessionId
 } else {throw "no possible connection ssh to the netscaler with $($nsip)" }
 
